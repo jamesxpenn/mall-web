@@ -10,7 +10,26 @@ app.use(express.json());
 const port = 8080;
 
 
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+
+const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
+
+
 const gateWayUrl = process.env.GATEWAY_URL || "http://mall-gateway:9001";
+
+
+app.post('/api/user/login', async (req, res) => {
+  
+  const appResponse = await axios.post(`${daprUrl}/malluser/method/user/login`, 
+    req.body,
+    {
+      headers:req.headers
+    }
+  )
+
+  return res.send(appResponse.data); 
+
+});
 
 
 app.post('/api/*', async (req, res) => {
