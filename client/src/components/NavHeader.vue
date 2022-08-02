@@ -126,7 +126,6 @@ import { removeToken } from '@/util/auth'
             }
           })
           .then(res => {
-            console.log("123132"+res.list.length);
             if (res.list.length > 6) {
               this.phoneList = res.list.slice(0, 6);
               this.RedMi = res.list.slice(6, 12);

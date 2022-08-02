@@ -104,10 +104,17 @@ export default {
   methods: {
     //页面渲染数据
     renderData(res) {
-      this.list = res.cartProductVoList;
-      this.allChecked = res.selectedAll;
-      this.cartTotalPrice = res.cartTotalPrice;
-      this.checkedNum = this.list.filter(item => item.productSelected).length; //返回选中的商品数量
+      if(res.cartProductVoList!=null){
+        this.list = res.cartProductVoList;
+        this.allChecked = res.selectedAll;
+        this.cartTotalPrice = res.cartTotalPrice;
+        this.checkedNum = this.list.filter(item => item.productSelected).length; //返回选中的商品数量
+      }else{
+        this.list =[];
+        this.cartTotalPrice = 0
+        this.checkedNum =0
+        this.allChecked =false;
+      }
     },
     //获取购物车列表
     getCartList() {
