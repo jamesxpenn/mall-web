@@ -115,6 +115,7 @@ export default {
         this.checkedNum =0
         this.allChecked =false;
       }
+
     },
     //获取购物车列表
     getCartList() {
@@ -175,6 +176,7 @@ export default {
       }
       this.showModal =  false
       this.$message.success('删除成功')
+
     },
     //跳转的结算页面
     orderConfirm() {
@@ -184,10 +186,16 @@ export default {
       } else {
         this.$router.push("/order/confirm");
       }
-    }
+    },
+      getCartCount() {
+      this.axios.get('/carts/products/sum').then((res = 0) => {
+        this.$store.dispatch('saveCartCount', res)
+      })
+    },
   },
   mounted() {
     this.getCartList();
+    this.getCartCount();
   }
 };
 </script>

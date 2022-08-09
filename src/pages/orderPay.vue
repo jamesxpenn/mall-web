@@ -86,6 +86,7 @@ export default {
   data() {
     return {
       orderNo: this.$route.query.orderNo, //订单号
+      amount: this.$route.query.amount,  //订单金额
       addrinfo: {}, //收货人详细地址
       goodsdetail: [], //商品信息
       totalPrice: 0, //商品总价
@@ -112,27 +113,62 @@ export default {
         this.payment = 1;
         window.open("/#/order/alipay?orderId=" + this.orderNo, "_blank"); //携带订单号跳转到支付宝支付页面（新页面）
       } else if (payment == 2) {
-        debugger;
-        this.payment = 2;
-        this.axios
-          .post("/pay/native", {
-            orderNo: this.orderNo,
-            orderName: "Vue高仿小米商城",
-            amount: 0.01,
-            payType: 2
-          })
-          .then(res => {
-              //通过插件生成微信支付二维码
-            QRCode.toDataURL(res.content)
-              .then(url => {
-                this.showPay = true;
-                this.payImg = url;
-                this.loopOrderState()
-              })
-              .catch(() => {
-                this.$message.error('二维码生成失败，请稍后重试')
-              });
-          });
+
+          this.$messageBox.confirm('您将支付'+this.totalPrice+'元是否继续？', '提示', {
+          confirmButtonText: '确认支付',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+              this.axios
+                  .post("/pay/native", {
+                    orderNo: this.orderNo,
+                    amount: this.amount
+                  }).then(res =>{
+                    this.$message({
+                      type: 'success',
+                      message: '支付成功!'
+                    });
+                    this.gotoOrderList();
+                  }).catch(()=>{
+                        this.$message({
+                          type: 'error',
+                          message: '支付失败'
+                        });          
+                  })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消支付'
+          });          
+        });
+
+        // this.$messageBox.prompt('您将支付', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // })
+
+        // this.payment = 2;
+        // this.axios
+        //   .post("/pay/native", {
+        //     orderNo: this.orderNo,
+        //     orderName: "Vue高仿小米商城",
+        //     amount: 0.01,
+        //     payType: 2
+        //   })
+        //   .then(res => {
+        //       //通过插件生成微信支付二维码
+        //     QRCode.toDataURL(res.content)
+        //       .then(url => {
+        //         this.showPay = true;
+        //         this.payImg = url;
+        //         this.loopOrderState()
+        //       })
+        //       .catch(() => {
+        //         this.$message.error('二维码生成失败，请稍后重试')
+        //       });
+        //   });
       }
     },
     closeModal(){
@@ -154,10 +190,16 @@ export default {
         }
       })
       },1000)
-    }
+    },
+    getCartCount() {
+        this.axios.get('/carts/products/sum').then((res = 0) => {
+          this.$store.dispatch('saveCartCount', res)
+        })
+      },
   },
   mounted() {
     this.getOrderDetail();
+     this.getCartCount();
   },
   components: {
     OrderHeader,

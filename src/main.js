@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import store from './store/index'
 import { getToken } from './util/auth'
+import { MessageBox } from 'element-ui'
 import Cookies from 'js-cookie'
 // import env from './env'
 
@@ -16,7 +17,7 @@ import Cookies from 'js-cookie'
 axios.defaults.baseURL = '/api'
 // axios.defaults.baseURL = env.baseURL
 //设置超时时间
-axios.defaults.timeout = 8000
+axios.defaults.timeout = 15000
 
 
 
@@ -67,6 +68,7 @@ if(mock){
 
 //把message组件挂载到vue实例，供全局使用
 Vue.prototype.$message = Message;
+Vue.prototype.$messageBox=MessageBox;
 //VueAxios的作用是将axios框架挂载到vue实例上，这样我们在其他vue文件中使用axios就不用importer了，直接用this.axios
 Vue.use(VueAxios,axios)
 Vue.use(VueLazyload,{

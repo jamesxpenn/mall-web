@@ -119,6 +119,7 @@
 import ServiceBar from "./../components/ServiceBar";
 import Modal from "./../components/Modal";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { getToken } from '../util/auth';
 import "swiper/css/swiper.css";
 export default {
   name: "index",
@@ -270,10 +271,19 @@ export default {
     },
     gotoCart() {
       this.$router.push("/cart");
-    }
+    },
+        getCartCount() {
+        this.axios.get('/carts/products/sum').then((res = 0) => {
+          this.$store.dispatch('saveCartCount', res)
+        })
+      }
   },
   mounted() {
     this.init();
+
+    if (getToken()) {
+       this.getCartCount();
+    }
   }
 };
 </script>

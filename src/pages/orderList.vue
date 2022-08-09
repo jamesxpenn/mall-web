@@ -17,6 +17,8 @@
             订单号：{{order.orderNo}}
             <span>|</span>
             {{order.paymentTypeDesc}}
+             支付状态：
+             {{order.status | statusFilter}}
           </div>
           <div class="pay">
             应付金额：
@@ -83,6 +85,19 @@ export default {
   },
   mounted() {
     this.getOrderList();
+  },
+  filters:{
+     statusFilter(val){
+       if(val==10){
+          return "未付款"
+       }
+       if(val==20){
+        return "已付款"
+       }
+       if(val==60){
+        return "交易关闭"
+       }
+     }
   },
   methods: {
     getOrderList() {

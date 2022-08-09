@@ -223,6 +223,8 @@ export default {
           this.count += item.quantity;
         });
         this.cartTotalPrice = res.cartTotalPrice;
+
+        this.$store.dispatch('saveCartCount', this.cartList.length);
       });
     },
     getaddrList() {
@@ -240,6 +242,7 @@ export default {
         this.$message.error('请选择一个收货地址')
         return;
       }
+
       this.axios.post('/orders',{
         shippingId:item.id
       }).then((res)=>{
@@ -247,7 +250,8 @@ export default {
         this.$router.push({
           path:'/order/pay',
           query:{
-            orderNo : res.orderNo
+            orderNo : res.orderNo,
+            amount: res.payment
           }
         })
       })
