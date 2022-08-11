@@ -39,6 +39,32 @@ app.get('/api/*', async (req, res) => {
 
 });
 
+app.put('/api/*', async (req, res) => {
+
+  const appResponse = await axios.put(
+    `${gateWayUrl}${req.originalUrl}`,
+	req.body,
+    {
+      params:req.query,
+      headers:req.headers
+    }
+  )
+  return res.send(appResponse.data); 
+
+});
+
+app.delete('/api/*', async (req, res) => {
+
+  const appResponse = await axios.delete(
+    `${gateWayUrl}${req.originalUrl}`,
+    {
+      params:req.query,
+      headers:req.headers
+    }
+  )
+  return res.send(appResponse.data); 
+
+});
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'client/dist')));

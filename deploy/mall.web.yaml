@@ -17,6 +17,7 @@ spec:
       containers:
       - image: jamesxpenn/mall-web:v1
         name: mall-web
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 ---
