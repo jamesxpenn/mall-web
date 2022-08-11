@@ -19,7 +19,7 @@ spec:
         dapr.io/app-port: "8080"
     spec:
       containers:
-      - image: jamesxpenn/mall-web:v1
+      - image: jamesxpenn/mall-web:v2
         name: mall-web
         imagePullPolicy: Always
         ports:
