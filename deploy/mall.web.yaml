@@ -12,7 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: mall-web    
+        app: mall-web
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "mallweb"
+        dapr.io/app-port: "8080"
     spec:
       containers:
       - image: jamesxpenn/mall-web:v1
