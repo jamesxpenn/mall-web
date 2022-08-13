@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "mallweb"
         dapr.io/app-port: "8080"
+        dapr.io/config: "appconfig"
     spec:
       containers:
       - image: jamesxpenn/mall-web:v2
